@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.chat-conversation {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: calc(100vh - 160px); 
+  margin-bottom: 10px; 
+}
+
+.input-group {
+  width: 100%;
+}
+
+textarea.form-control {
+  flex-grow: 1;
+  resize: none;
+  height: 38px; 
+}
+
+button.btn.btn-primary {
+  height: 38px; 
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
