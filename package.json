@@ -2,7 +2,7 @@
   "name": "altcademy-capstone",
   "private": true,
   "engines": {
-    "node": "^16.17"
+    "node": "16.14.2"
   },
   "dependencies": {
     "@babel/preset-react": "^7.23.3",
@@ -24,6 +24,6 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^3"
+    "webpack-dev-server": "^4.15.1"
   }
 }
