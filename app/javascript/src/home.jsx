@@ -8,7 +8,7 @@ const Home = () => {
   const [messages, setMessages] = useState([
     { content: "Welcome! How can I assist you today?", direction: 'incoming', id: Date.now() },
   ]);
-  const [messageId, setMessageId] = useState(0);
+  const [messageId, setMessageId] = useState(1);
   const [dynamicOptions, setDynamicOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [buttonSelected, setButtonSelected] = useState(false);
