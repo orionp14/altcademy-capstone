@@ -41,7 +41,6 @@ header h2 {
 
 .chatbot .chatbox {
   overflow-y: auto;
-  height: 510px;
   padding: 30px 20px 100px;
 }
 
@@ -68,21 +67,25 @@ header h2 {
   background: #35A7FF;
 }
 
-.chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+.chatbot :where(.chat-container, .chatbox, textarea)::-webkit-scrollbar {
   width: 6px;
 }
+
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 25px;
 }
+
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 25px;
 }
+
 .chatbox .chat {
   display: flex;
   list-style: none;
 }
+
 .chatbox .outgoing {
   margin: 20px 0;
   justify-content: flex-end;
@@ -91,14 +94,17 @@ header h2 {
 .chatbox .incoming p {
   border-radius: 25px;
 }
+
 .chatbox .chat p.error {
   color: #721c24;
   background: #f8d7da;
 }
+
 .chatbox .incoming p {
   color: #333;
   background: #f2f2f2;
 }
+
 .chatbot .chat-input {
   display: flex;
   gap: 5px;
@@ -118,6 +124,7 @@ header h2 {
   max-height: 180px;
   padding: 15px 15px 15px 0;
   font-size: 0.95rem;
+  overflow: hidden;
 }
 .chat-input span {
   align-self: flex-end;
@@ -131,29 +138,6 @@ header h2 {
 }
 .chat-input textarea:valid ~ span {
   visibility: visible;
-}
-@media (max-width: 490px) {
-  .chatbot-toggler {
-    right: 20px;
-    bottom: 20px;
-  }
-  .chatbot {
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    border-radius: 0;
-    width: 100%;
-  }
-  .chatbot .chatbox {
-    height: 90%;
-    padding: 25px 15px 100px;
-  }
-  .chatbot .chat-input {
-    padding: 5px 15px;
-  }
-  .chatbot header span {
-    display: block;
-  }
 }
 
 .logo-panel {
@@ -181,9 +165,10 @@ header h2 {
 }
 
 .chatbot-content {
-  height: 100%;
+  max-height:calc(100vh - 64px);
   display: flex;
   flex-direction: column;
+  z-index: -1;
 }
 
 .button-panel {
@@ -218,4 +203,9 @@ header h2 {
   font-size: 20px;
   font-weight: bold;
   color: #333;
+}
+
+.chat-container {
+  overflow-y: auto;
+  max-height:calc(100vh - 64px);
 }
