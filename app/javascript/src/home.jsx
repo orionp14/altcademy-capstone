@@ -34,35 +34,40 @@ const Home = () => {
   };
 
   const generateResponse = async (id, userMessage) => {
-    const API_URL = "https://api.openai.com/v1/chat/completions";
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "You are a medical professional providing a diagnosis and suggesting ways to alleviate symptoms." },
-          { role: "user", content: userMessage }
-        ],
-      })
-    };
+    const API_URL = "/generate_response";
 
     try {
-      const response = await fetch(API_URL, requestOptions);
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          user_message: userMessage,
+        }),
+      });
+
       const data = await response.json();
 
-      setMessages((prevMessages) => [
-        ...prevMessages.filter((msg) => msg.id !== id),
-        { content: userMessage, direction: 'outgoing', id },
-        { content: data.choices[0].message.content.trim(), direction: 'incoming', id },
-      ]);
+      if (data.success) {
+        setMessages((prevMessages) => [
+          ...prevMessages.filter((msg) => msg.id !== id),
+          { content: userMessage, direction: 'outgoing', id },
+          { content: data.incoming_message, direction: 'incoming', id },
+        ]);
+      } else {
+        console.error("Error fetching data:", data.error);
+        const errorMessage = "Oops! Something went wrong. Please try again.";
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { content: errorMessage, direction: "incoming", id },
+        ]);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       const errorMessage = "Oops! Something went wrong. Please try again.";
-      setMessages(prevMessages => [
+      setMessages((prevMessages) => [
         ...prevMessages,
         { content: errorMessage, direction: "incoming", id },
       ]);

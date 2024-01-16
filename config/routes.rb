@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'static_pages/home'
   root to: "static_pages#home"
-  post '/chatbot/generate_response', to: 'chatbot#generate_response'
+  post '/generate_response', to: 'chat#generate_response'
 end
