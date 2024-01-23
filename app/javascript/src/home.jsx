@@ -25,13 +25,11 @@ const Home = () => {
     }
   }, [messages]);
 
-  const createChatLi = (message, className, id) => {
-    return (
-      <li key={`${id}-${className}`} className={`chat ${className}`}>
-        {className === 'outgoing' ? <p>{message}</p> : <><span className="material-symbols-outlined">smart_toy</span><p>{message}</p></>}
-      </li>
-    );
-  };
+  const createChatLi = (message, className, id) => (
+    <li key={`${id}-${className}`} className={`chat ${className}`}>
+      {className === 'outgoing' ? <p>{message}</p> : <><span className="material-symbols-outlined">smart_toy</span><p>{message}</p></>}
+    </li>
+  );
 
   const generateResponse = async (id, userMessage) => {
     const API_URL = "/generate_response";
@@ -107,17 +105,17 @@ const Home = () => {
   };
 
   const predefinedMessages = [
-    { label: 'Sickness', options: ['Cold', 'Fever', 'Stomach Bug', 'Other Sickness'] },
-    { label: 'Injury', options: ['Broken Bone', 'Sprain', 'Cut', 'Other Injury'] },
-    { label: 'Allergies', options: ['Pollen', 'Dust', 'Food', 'Other Allergy'] },
-    { label: 'Other', options: ['Migraine', 'Fatigue', 'Sleep Disorder', 'Other Medical Concern'] },
+    { label: 'Sickness', options: ['Cold', 'Fever', 'Nausea', 'Other'] },
+    { label: 'Injury', options: ['Fracture', 'Sprain', 'Cut', 'Other'] },
+    { label: 'Allergies', options: ['Pollen', 'Dust', 'Food', 'Other'] },
+    { label: 'Other', options: ['Migraine', 'Fatigue', 'Sleep', 'Other'] },
   ];
   
   const sentenceMapping = {
     'Cold': 'I am currently experiencing symptoms of a cold, such as a runny nose and congestion.',
     'Fever': 'I am running a fever and feeling unwell.',
-    'Stomach Bug': 'I suspect I have a stomach bug, as I am experiencing nausea and abdominal discomfort.',
-    'Broken Bone': 'I believe I may have a broken bone, and I am experiencing pain and difficulty moving the affected area.',
+    'Nausea': 'I suspect I have a stomach bug, as I am experiencing nausea and abdominal discomfort.',
+    'Fracture': 'I believe I may have a broken bone, and I am experiencing pain and difficulty moving the affected area.',
     'Sprain': 'I have a sprain, and the affected area is swollen and painful when I try to move it.',
     'Cut': 'I have a cut, and it may need attention as it is bleeding and causing discomfort.',
     'Pollen': 'I am allergic to pollen, and I am experiencing symptoms like sneezing, itching, and watery eyes.',
@@ -125,11 +123,8 @@ const Home = () => {
     'Food': 'I have allergies to certain foods, and I am experiencing symptoms like itching, swelling, or digestive issues.',
     'Migraine': 'I am having a migraine with symptoms like a throbbing headache and sensitivity to light.',
     'Fatigue': 'I am feeling extreme fatigue and low energy levels.',
-    'Sleep Disorder': 'I am having trouble sleeping and suspect I may have a sleep disorder.',
-    'Other Medical Concern': 'I have other medical concerns that are not related to sickness, injury, or allergies.',
-    'Other Sickness': 'I am experiencing symptoms that do not fit into common sickness categories and may need medical attention.',
-    'Other Injury': 'I have an injury that is not described in the usual categories, and I am seeking advice on what to do.',
-    'Other Allergy': 'I am having an allergic reaction to something not covered in typical allergy categories, and I need guidance on managing it.',
+    'Sleep': 'I am having trouble sleeping and suspect I may have a sleep disorder.',
+    'Other': 'I have a different medical concern that is not related to any of the options.',
   };
   
   const handleButtonClick = (button) => {
@@ -160,57 +155,33 @@ const Home = () => {
       setButtonSelected(false);
     }
   };
+
+  const getQuestionText = () => {
+    if (selectedCategory === 'Other') {
+      return 'Please describe the medical concern you are experiencing.';
+    } else if (selectedCategory) {
+      return `What ${selectedCategory.toLowerCase()} are you experiencing?`;
+    } else {
+      return 'What symptoms are you experiencing?';
+    }
+  };
   
   return (
     <section className="">
       <header>
-        <h2>Chatbot</h2>
+        <h2>MediBot</h2>
       </header>
       <div className="container-fluid g-0">
         <div className="row g-0">
-          <div className="col-lg-6 logo-panel d-flex flex-column align-items-center justify-content-center">
-            <div className='circle mb-3'>
-              <span className="material-symbols-outlined main-logo">smart_toy</span>
-            </div>
-            <p className="text-center mb-4 disclaimer">
-              <span className="disclaimer-title">Welcome to our AI Medical Chatbot!</span>
-              <br />
-              We're here to help you determine your illness and provide guidance on combating symptoms.
-              Please note that this is not a substitute for professional medical advice.
-            </p>
-            <div className="button-panel justify-content-center">
-              {selectedCategory ? (
-                dynamicOptions.map((option) => (
-                  <button
-                    key={option}
-                    className="action-button btn btn-outline-primary w-100"
-                    onClick={() => handleButtonClick({ label: option })}
-                  >
-                    {option}
-                  </button>
-                ))
-              ) : (
-                predefinedMessages.map((button) => (
-                  <button
-                    key={button.label}
-                    className="action-button btn btn-outline-primary w-100"
-                    onClick={() => handleButtonClick(button)}
-                  >
-                    {button.label}
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-          <div className="col-lg-6">
+          <div className="col-lg-8 order-1 order-lg-2">
             <div className="chatbot">
               <div className="chatbot-content">
-              <div className="chat-container" ref={messagesContainerRef}>
-                <ul className="chatbox">
-                  {messages.map((message) => (
-                    createChatLi(message.content, message.direction, message.id)
-                  ))}
-                </ul>
+                <div className="chat-container" ref={messagesContainerRef}>
+                  <ul className="chatbox">
+                    {messages.map((message) => (
+                      createChatLi(message.content, message.direction, message.id)
+                    ))}
+                  </ul>
                 </div>
                 <div className="chat-input">
                   <textarea
@@ -222,7 +193,55 @@ const Home = () => {
                     onKeyDown={handleEnterKeyPress}
                     required
                   ></textarea>
-                  <span id="send-btn" className="material-symbols-rounded" onClick={handleChat}>send</span>
+                  <span id="send-btn" className="material-symbols-rounded" onClick={handleChat}>
+                    send
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-4 order-2 order-lg-1 logo-panel d-flex flex-column align-items-center justify-content-center">
+            <div className="white-background-container vh-100 d-flex flex-column">
+              <div className="disclaimer d-flex flex-column align-items-center justify-content-center mt-auto">
+                <div className="logo-container mb-2 d-flex align-items-center">
+                  <div className='circle fs-lg-3 fs-md-2' style={{ marginRight: '1rem', fontSize: '2rem' }}>
+                    <span className="material-symbols-outlined main-logo">smart_toy</span>
+                  </div>
+                </div>
+                <div className="text-container text-center">
+                  <p className="disclaimer-title mb-1">Welcome to MediBot!</p>
+                  <p className="disclaimer-text mb-0 fs-md">
+                    I'm here to help identify your medical issue and guide you on managing symptoms. Note, this isn't a substitute for professional advice.
+                  </p>
+                </div>
+              </div>
+              <hr className="divider" />
+              <div className="button-panel text-center mb-auto">
+                <p className="question-text">{getQuestionText()}</p>
+                <div className='button-row'>
+                  {selectedCategory ? (
+                    dynamicOptions.map((option) => (
+                      <div key={option} className="mb-1">
+                        <button
+                          className="action-button btn btn-outline-primary w-100"
+                          onClick={() => handleButtonClick({ label: option })}
+                        >
+                          {option}
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    predefinedMessages.map((button) => (
+                      <div key={button.label} className="mb-1">
+                        <button
+                          className="action-button btn btn-outline-primary w-100"
+                          onClick={() => handleButtonClick(button)}
+                        >
+                          {button.label}
+                        </button>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

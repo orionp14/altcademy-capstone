@@ -29,7 +29,7 @@ class ChatController < ApplicationController
     request.body = {
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are a medical professional providing a diagnosis and suggesting ways to alleviate symptoms." },
+        { role: "system", content: "You are a medical professional providing a short diagnosis and suggesting ways to alleviate symptoms. Only answer questions that relate to medical advice." },
         { role: "user", content: user_message }
       ]
     }.to_json
