@@ -12,6 +12,8 @@ const Home = () => {
   const [dynamicOptions, setDynamicOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [buttonSelected, setButtonSelected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showChatbotButtons, setShowChatbotButtons] = useState(false);
   const messagesContainerRef = useRef(null);
   const inputInitHeight = 50;
 
@@ -24,6 +26,25 @@ const Home = () => {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth <= 991;
+      setIsMobile(newIsMobile);
+
+      if (newIsMobile) {
+        setShowChatbotButtons(true);
+      }
+    };
+  
+    handleResize();
+  
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const createChatLi = (message, className, id) => (
     <li key={`${id}-${className}`} className={`chat ${className}`}>
@@ -108,7 +129,7 @@ const Home = () => {
     { label: 'Sickness', options: ['Cold', 'Fever', 'Nausea', 'Other'] },
     { label: 'Injury', options: ['Fracture', 'Sprain', 'Cut', 'Other'] },
     { label: 'Allergies', options: ['Pollen', 'Dust', 'Food', 'Other'] },
-    { label: 'Other', options: ['Migraine', 'Fatigue', 'Sleep', 'Other'] },
+    { label: 'Other', options: ['Migraine', 'Fatigue', 'Dizzy', 'Other'] },
   ];
   
   const sentenceMapping = {
@@ -123,7 +144,7 @@ const Home = () => {
     'Food': 'I have allergies to certain foods, and I am experiencing symptoms like itching, swelling, or digestive issues.',
     'Migraine': 'I am having a migraine with symptoms like a throbbing headache and sensitivity to light.',
     'Fatigue': 'I am feeling extreme fatigue and low energy levels.',
-    'Sleep': 'I am having trouble sleeping and suspect I may have a sleep disorder.',
+    'Dizzy': 'I am feeling dizzy and lightheaded, experiencing a sensation of spinning or unsteadiness.',
     'Other': 'I have a different medical concern that is not related to any of the options.',
   };
   
@@ -158,24 +179,68 @@ const Home = () => {
 
   const getQuestionText = () => {
     if (selectedCategory === 'Other') {
-      return 'Please describe the medical concern you are experiencing.';
+      return 'Which medical concern are you experiencing?';
     } else if (selectedCategory) {
       return `What ${selectedCategory.toLowerCase()} are you experiencing?`;
     } else {
       return 'What symptoms are you experiencing?';
     }
   };
+
+  const toggleMobilePanel = () => {
+    setIsMobile((prev) => !prev);
+    setShowChatbotButtons((prev) => !prev && window.innerWidth <= 991);
+  };
   
   return (
     <section className="">
-      <header>
+      <header className="header-container">
         <h2>MediBot</h2>
+        {window.innerWidth <= 991 && (
+          <button className="btn btn-outline-light btn-toggle" onClick={toggleMobilePanel}>
+            {isMobile ? 'Skip to chat' : 'Need Help?'}
+          </button>
+        )}
       </header>
       <div className="container-fluid g-0">
         <div className="row g-0">
           <div className="col-lg-8 order-1 order-lg-2">
             <div className="chatbot">
               <div className="chatbot-content">
+                {isMobile && showChatbotButtons && (
+                  <div className="button-panel text-center isMobile">
+                    <p className="question-text">{getQuestionText()}</p>
+                    <div className="button-grid d-flex justify-content-center">
+                      {selectedCategory ? (
+                        <div className="d-flex flex-wrap justify-content-center">
+                          {dynamicOptions.map((option) => (
+                            <div key={option} className="mb-1">
+                              <button
+                                className={`fixed-width-button action-button btn btn-outline-light`}
+                                onClick={() => handleButtonClick({ label: option })}
+                              >
+                                {option}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="d-flex flex-wrap justify-content-center">
+                          {predefinedMessages.map((button) => (
+                            <div key={button.label} className="mb-1">
+                              <button
+                                className={`fixed-width-button action-button btn btn-outline-light`}
+                                onClick={() => handleButtonClick(button)}
+                              >
+                                {button.label}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
                 <div className="chat-container" ref={messagesContainerRef}>
                   <ul className="chatbox">
                     {messages.map((message) => (
