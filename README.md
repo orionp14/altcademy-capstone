@@ -6,8 +6,6 @@ Product Images:
 
 ![medibot1](https://github.com/orionp14/altcademy-capstone/assets/111712275/b593e2c1-8f07-45c4-843a-dc66e363076e)
 ![medibot2](https://github.com/orionp14/altcademy-capstone/assets/111712275/1595859d-5333-40bf-883d-39d9dea5e32a)
-![medibot-mobile](https://github.com/orionp14/altcademy-capstone/assets/111712275/bcb153b3-da1c-4375-aae3-e29a376a2f38)
-
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -71,9 +69,12 @@ Rather than overwhelming users with medical terminology or complex diagnoses, th
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Wireframes: (before & after user testing)
+Wireframes:
 
+Before:
 ![0e1c50c0-244b-44f7-ab43-bbc40a5e0d02](https://github.com/orionp14/altcademy-capstone/assets/111712275/b807ca12-49f7-4d5d-9078-eb4c2614d2c4)
+
+After:
 ![6f1fba74-094c-4a65-8821-fec017271f0f](https://github.com/orionp14/altcademy-capstone/assets/111712275/910eee86-ba4b-4c8d-a184-5a8da11b8d46)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
