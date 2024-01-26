@@ -2,9 +2,8 @@ Medibot:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Product Images:
+Product Image:
 
-![medibot1](https://github.com/orionp14/altcademy-capstone/assets/111712275/b593e2c1-8f07-45c4-843a-dc66e363076e)
 ![medibot2](https://github.com/orionp14/altcademy-capstone/assets/111712275/1595859d-5333-40bf-883d-39d9dea5e32a)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,7 +51,9 @@ This holistic approach ensures a seamless user experience and sets the foundatio
 Dependencies:
 
 ruby-openai: https://rubygems.org/gems/ruby-openai
+
 dotenv-rails: https://rubygems.org/gems/dotenv-rails/versions/2.1.1?locale=en
+
 httparty: https://rubygems.org/gems/httparty/versions/0.13.7?locale=en
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
